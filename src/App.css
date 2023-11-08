@@ -1,0 +1,147 @@
+/* App.css */
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body, .dial {
+  background-color: #000;
+  overflow: hidden;
+}
+
+.gauge {
+  position: absolute;
+  width: 350px;
+  height: 500px;
+  top: 30px;
+  left: 50%;
+  margin-left: -250px;
+  border-radius: 100%;
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform: rotate(0deg);
+}
+
+.meter {
+  margin: 0;
+  padding: 0;
+}
+
+.meter > li {
+  width: 250px;
+  height: 250px;
+  list-style-type: none;
+  position: absolute;
+  border-top-left-radius: 250px;
+  border-top-right-radius: 0px;
+  transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  transition-property: -webkit-transform;
+  pointer-events: none;
+}
+
+.meter .low {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  z-index: 8;
+  background-color: #09B84F;
+}
+
+.meter .normal {
+  transform: rotate(47deg);
+  -webkit-transform: rotate(47deg);
+  -moz-transform: rotate(47deg);
+  -ms-transform: rotate(47deg);
+  -o-transform: rotate(47deg);
+  z-index: 7;
+  background-color: #FEE62A;
+}
+
+.meter .high {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  z-index: 6;
+  background-color: #FA0E1C;
+}
+
+.dial, .dial .inner {
+  width: 470px;
+  height: 470px;
+  position: relative;
+  top: 10px;
+  left: 5px;
+  border-radius: 100%;
+  border-color: purple;
+  z-index: 10;
+  transition-property: -webkit-transform;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
+  transform: rotate(80deg);
+  -webkit-transform: rotate(100deg);
+  -moz-transform: rotate(70deg);
+  -ms-transform: rotate(50deg);
+  -o-transform: rotate(40deg);
+}
+
+.dial .arrow {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 254px;
+  left: 22px;
+  border-left: 10px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 32px solid #FFFFFF;
+  -webkit-transform: rotate(-88deg);
+  -moz-transform: rotate(88deg);
+  -ms-transform: rotate(88deg);
+  -o-transform: rotate(88deg);
+}
+
+.gauge .value {
+  font-family: 'Josefin Slab', serif;
+  font-size: 90px;
+  color: #ffffff;
+  position: absolute;
+  top: 142px;
+  left: 45%;
+  z-index: 11;
+}
+/* Media Query for Mobile and Tablet */
+@media (max-width: 768px) {
+  .gauge {
+    width: 200px;
+    height: 300px;
+    top: 30px;
+    left: 50%;
+    margin-left: -140px;
+  }
+
+  .meter > li {
+    width: 150px;
+    height: 150px;
+  }
+
+  .dial, .dial .inner {
+    width: 300px;
+    height: 300px;
+  }
+
+  .dial .arrow {
+    top: 150px;
+  }
+
+  .gauge .value {
+    font-size: 50px;
+    top: 80px;
+  }
+}

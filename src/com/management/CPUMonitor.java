@@ -11,10 +11,13 @@ import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class CPUMonitor {
     private static List<Double> cpuUsageData = new ArrayList<>();
-
+    
     public static void main(String[] args) throws IOException {
         OperatingSystemMXBean osMxBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
@@ -23,6 +26,16 @@ public class CPUMonitor {
         server.createContext("/get-cpu-usage", new GetCPUUsageHandler());
         server.setExecutor(null);
         server.start();
+
+        // Schedule a task to update CPU usage every 5 seconds
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                updateCPUUsage(osMxBean);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     static class CPUUsageHandler implements HttpHandler {
@@ -70,5 +83,12 @@ public class CPUMonitor {
             os.write(responseData.toString().getBytes());
             os.close();
         }
+    }
+
+    private static void updateCPUUsage(OperatingSystemMXBean osMxBean) throws IOException {
+        double cpuUsage = osMxBean.getSystemCpuLoad() * 100;
+        String response = "CPU Usage: " + cpuUsage + "%";
+        // Save CPU usage data to the in-memory list
+        cpuUsageData.add(cpuUsage);
     }
 }

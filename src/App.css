@@ -6,17 +6,15 @@ html, body {
 }
 
 body, .dial {
-  background-color: #000;
+  background-color: #fffefe;
   overflow: hidden;
 }
 
+/* Common styles for the gauges */
 .gauge {
   position: absolute;
-  width: 350px;
-  height: 500px;
-  top: 30px;
-  left: 50%;
-  margin-left: -250px;
+  width: 250px; /* Reduced gauge size */
+  height: 350px; /* Reduced gauge size */
   border-radius: 100%;
   transform-origin: 50% 50%;
   -webkit-transform-origin: 50% 50%;
@@ -30,11 +28,11 @@ body, .dial {
 }
 
 .meter > li {
-  width: 250px;
-  height: 250px;
+  width: 150px; /* Reduced gauge size */
+  height: 150px; /* Reduced gauge size */
   list-style-type: none;
   position: absolute;
-  border-top-left-radius: 250px;
+  border-top-left-radius: 150px; /* Reduced border radius */
   border-top-right-radius: 0px;
   transform-origin: 100% 100%;
   -webkit-transform-origin: 100% 100%;
@@ -56,7 +54,8 @@ body, .dial {
 .meter .normal {
   transform: rotate(47deg);
   -webkit-transform: rotate(47deg);
-  -moz-transform: rotate(47deg);
+  -moz-transform: rotate
+  (47deg);
   -ms-transform: rotate(47deg);
   -o-transform: rotate(47deg);
   z-index: 7;
@@ -74,8 +73,8 @@ body, .dial {
 }
 
 .dial, .dial .inner {
-  width: 470px;
-  height: 470px;
+  width: 270px; /* Slightly larger dial size */
+  height: 270px; /* Slightly larger dial size */
   position: relative;
   top: 10px;
   left: 5px;
@@ -85,63 +84,136 @@ body, .dial {
   transition-property: -webkit-transform;
   transition-duration: 1s;
   transition-timing-function: ease-in-out;
-  transform: rotate(80deg);
-  -webkit-transform: rotate(100deg);
+  transform: rotate(0deg);
+  -webkit-transform: rotate(00deg);
   -moz-transform: rotate(70deg);
   -ms-transform: rotate(50deg);
   -o-transform: rotate(40deg);
 }
 
-.dial .arrow {
-  width: 0;
-  height: 0;
-  position: absolute;
-  top: 254px;
-  left: 22px;
-  border-left: 10px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 32px solid #FFFFFF;
-  -webkit-transform: rotate(-88deg);
-  -moz-transform: rotate(88deg);
-  -ms-transform: rotate(88deg);
-  -o-transform: rotate(88deg);
-}
-
 .gauge .value {
   font-family: 'Josefin Slab', serif;
-  font-size: 90px;
-  color: #ffffff;
-  position: absolute;
-  top: 142px;
-  left: 45%;
-  z-index: 11;
+  font-size: 25px; /* Reduced font size */
+  color: #0a0a0a;
+  position: relative;
+  bottom: 109px; /* Adjusted top position */
+  left: 20%;
+  z-index: 20;
 }
+
+/* CPU Gauge */
+.cpu-gauge {
+  top: 30px;
+  left: 8%; /* Adjusted left position for separation */
+}
+
+/* RAM Gauge */
+.ram-gauge {
+  top: 30px;
+  left: 40%; /* Adjusted left position for separation */
+}
+
+/* Swap Gauge */
+.swap-gauge {
+  top: 30px;
+  left: 70%; /* Adjusted left position for separation */
+}
+
+/* Arrow Style */
+/* Your existing arrow style */
+/* Your existing arrow style */
+/* Your existing arrow style */
+.dial .arrow {
+  width: 2px;
+  height: 170px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background-color: #09B84F; /* Default green color */
+  transform-origin: 4% 0;
+  transition: transform 0.4s ease, background-color 0.4s ease;
+}
+
+/* Additional arrow on top of the existing arrow */
+.dial .arrow::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #09B84F; /* Default green color */
+  transition: background-color 0.4s ease;
+}
+
+/* Add a class to change arrow color to red if above 50% */
+.dial .arrow.red {
+  background-color: #e97d7d; /* Red color */
+}
+
+/* Add a class to change the top arrow color to red if above 50% */
+.dial .arrow::before.red {
+  background-color: #e97d7d; /* Red color */
+}
+
+
+/* Additional arrow for the mouse cursor effect */
+/* Modify the clip-path property to make the arrow point outward */
+.dial .mouse-arrow {
+  width: 12px; /* Adjust the width as needed */
+  height: 12px; /* Adjust the height as needed */
+  position: absolute;
+  top: 50%; /* Position in the middle vertically */
+  left: 50%; /* Position in the middle horizontally */
+  transform: translate(-50%, -50%); /* Center the arrow precisely */
+  background-color: #504a4a; /* Set the color as needed */
+  border-radius: 50%; /* Make it round */
+}
+
+
+
 /* Media Query for Mobile and Tablet */
 @media (max-width: 768px) {
   .gauge {
-    width: 200px;
-    height: 300px;
+    width: 150px; /* Reduced gauge size for mobile */
+    height: 200px; /* Reduced gauge size for mobile */
     top: 30px;
     left: 50%;
-    margin-left: -140px;
+    margin-left: -100px; /* Adjusted margin for separation */
   }
 
   .meter > li {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* Reduced gauge size for mobile */
+    height: 100px; /* Reduced gauge size for mobile */
   }
 
   .dial, .dial .inner {
-    width: 300px;
-    height: 300px;
-  }
-
-  .dial .arrow {
-    top: 150px;
+    width: 200px; /* Slightly larger dial size for mobile */
+    height: 200px; /* Slightly larger dial size for mobile */
   }
 
   .gauge .value {
-    font-size: 50px;
-    top: 80px;
+    font-size: 20px; /* Reduced font size for mobile */
+    top: 60px; /* Adjusted top position for mobile */
+  }
+
+  /* CPU Gauge */
+  .cpu-gauge {
+    top: 30px;
+    left: 15%; /* Adjusted left position for separation */
+  }
+
+  /* RAM Gauge */
+  .ram-gauge {
+    top: 30px;
+    left: 50%; /* Adjusted left position for separation */
+  }
+
+  /* Swap Gauge */
+  .swap-gauge {
+    top: 30px;
+    left: 85%; /* Adjusted left position for separation */
   }
 }

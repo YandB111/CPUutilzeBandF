@@ -3,48 +3,89 @@ import './App.css'; // Import the CSS for styling
 
 function App() {
   const [cpuUsage, setCpuUsage] = useState(0);
+  const [ramUsage, setRamUsage] = useState(0);
+  const [swapUsage, setSwapUsage] = useState(0);
 
   useEffect(() => {
-    // Function to fetch CPU usage data
-    const fetchCPUUsage = () => {
-      fetch('http://localhost:8080/get-cpu-usage') // Replace with the actual server address
-        .then((response) => response.text())
+    // Function to fetch system monitoring data
+    const fetchSystemMonitoring = () => {
+      fetch('http://192.168.102.111:9187/monitoring')
+        .then((response) => response.json()) // Parse JSON response
         .then((data) => {
-          const usageArray = data.split(', ').map(parseFloat);
-          // Filter out NaN values and use the last recorded CPU usage value
-          const validUsageArray = usageArray.filter((value) => !isNaN(value));
-          if (validUsageArray.length > 0) {
-            setCpuUsage(validUsageArray[validUsageArray.length - 1]);
+          if (data.cpu) {
+            setCpuUsage(data.cpu);
+          }
+          if (data.ram) {
+            setRamUsage(data.ram);
+          }
+          if (data.swap) {
+            setSwapUsage(data.swap);
           }
         })
         .catch((error) => {
-          console.error('Error fetching CPU usage:', error);
+          console.error('Error fetching system monitoring data:', error);
         });
     };
 
-    // Fetch initial CPU usage
-    fetchCPUUsage();
+    // Fetch initial system monitoring data
+    fetchSystemMonitoring();
 
-    // Update CPU usage every 5 seconds
-    const intervalId = setInterval(fetchCPUUsage, 5000);
+    // Update system monitoring data every 5 seconds
+    const intervalId = setInterval(fetchSystemMonitoring, 5000);
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <div className="gauge">
-      <ul className="meter">
-        <li className="low"></li>
-        <li className="normal"></li>
-        <li className="high"></li>
-      </ul>
-      <div className="dial">
-        <div className="inner" style={{ transform: `rotate(${(cpuUsage * 1.8 - 90)}deg)` }}>
-          <div className="arrow"></div>
+    <div className="monitoring-container">
+      {/* CPU Gauge */}
+      <div className={`gauge cpu-gauge ${cpuUsage > 50 ? 'red' : ''}`}>
+        <ul className="meter">
+          <li className="low"></li>
+          <li className="normal"></li>
+          <li className="high"></li>
+        </ul>
+        <div className="dial">
+          <div className={`inner ${cpuUsage > 50 ? 'red' : ''}`} style={{ transform: `rotate(${(cpuUsage * 1.8 - 90)}deg)` }}>
+            <div className={`arrow ${cpuUsage > 50 ? 'red' : ''}`}></div>
+            <div className={`mouse-arrow ${cpuUsage > 50 ? 'red' : ''}`}></div>
+          </div>
         </div>
+        <div className="value">CPU RAM: {cpuUsage.toFixed(2)}%</div>
       </div>
-      <div className="value">{cpuUsage.toFixed(2)}%</div>
+      
+      {/* RAM Gauge */}
+      <div className={`gauge ram-gauge ${ramUsage > 50 ? 'red' : ''}`}>
+        <ul className="meter">
+          <li className="low"></li>
+          <li className="normal"></li>
+          <li className="high"></li>
+        </ul>
+        <div className="dial">
+          <div className={`inner ${ramUsage > 50 ? 'red' : ''}`} style={{ transform: `rotate(${(ramUsage * 1.8 - 90)}deg)` }}>
+            <div className={`arrow ${ramUsage > 50 ? 'red' : ''}`}></div>
+            <div className={`mouse-arrow ${ramUsage > 50 ? 'red' : ''}`}></div>
+          </div>
+        </div>
+        <div className="value">Ram Usage {ramUsage.toFixed(2)}%</div>
+      </div>
+      
+      {/* Swap Gauge */}
+      <div className={`gauge swap-gauge ${swapUsage > 50 ? 'red' : ''}`}>
+        <ul className="meter">
+          <li className="low"></li>
+          <li className="normal"></li>
+          <li className="high"></li>
+        </ul>
+        <div className="dial">
+          <div className={`inner ${swapUsage > 50 ? 'red' : ''}`} style={{ transform: `rotate(${(swapUsage * 1.8 - 90)}deg)` }}>
+            <div className={`arrow ${swapUsage > 50 ? 'red' : ''}`}></div>
+            <div className={`mouse-arrow ${swapUsage > 50 ? 'red' : ''}`}></div>
+          </div>
+        </div>
+        <div className="value">Swap Usage {swapUsage.toFixed(2)}%</div>
+      </div>
     </div>
   );
 }
